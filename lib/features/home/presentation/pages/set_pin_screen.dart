@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trustlink/features/home/presentation/home.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../components/pin_widget.dart';
+import '../../../auth/presentation/components/pin_widget.dart';
 
 class SetPinScreen extends StatelessWidget {
   const SetPinScreen({super.key});

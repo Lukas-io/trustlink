@@ -52,7 +52,7 @@ class RecentTransactions extends StatelessWidget {
               ],
             ),
             ListView.separated(
-                padding: const EdgeInsets.only(top: 0),
+                padding: const EdgeInsets.only(top: 4),
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ListTile(

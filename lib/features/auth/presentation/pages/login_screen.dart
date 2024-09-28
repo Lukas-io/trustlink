@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trustlink/core/constants/app_colors.dart';
@@ -35,6 +36,8 @@ class LoginScreen extends StatelessWidget {
             }
           },
           builder: (context, state) {
+            bool obscure = true;
+
             return Scaffold(
               appBar: AppBar(),
               body: SafeArea(
@@ -72,17 +75,25 @@ class LoginScreen extends StatelessWidget {
                         const SizedBox(
                           height: 12.0,
                         ),
-                        TextField(
-                          autofillHints: const [AutofillHints.password],
-                          obscureText: true,
-                          keyboardType: TextInputType.emailAddress,
-                          controller: TextEditingController(text: password),
-                          decoration: const InputDecoration(
-                            hintText: "Password",
-                            prefixIcon: Icon(Icons.lock_outline_rounded),
-                          ),
-                          onChanged: (text) => password = text,
-                        ),
+                        StatefulBuilder(builder: (context, setState) {
+                          return TextField(
+                            autofillHints: const [AutofillHints.password],
+                            obscureText: obscure,
+                            keyboardType: TextInputType.emailAddress,
+                            controller: TextEditingController(text: password),
+                            decoration: InputDecoration(
+                                hintText: "Password",
+                                prefixIcon: Icon(Icons.lock_outline_rounded),
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() => obscure = !obscure);
+                                    },
+                                    icon: Icon(obscure
+                                        ? CupertinoIcons.eye_fill
+                                        : CupertinoIcons.eye_slash_fill))),
+                            onChanged: (text) => password = text,
+                          );
+                        }),
                         Container(
                           width: double.infinity,
                           margin: const EdgeInsets.symmetric(

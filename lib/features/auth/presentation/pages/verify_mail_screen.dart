@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trustlink/core/resources/global.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_event.dart';
-import 'package:trustlink/features/auth/presentation/pages/set_pin_screen.dart';
+import 'package:trustlink/features/home/presentation/pages/set_pin_screen.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../injection_container.dart';

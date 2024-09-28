@@ -60,6 +60,12 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () {},
                   ),
                   ListTile(
+                    title: Text("Report an issue",
+                        style: Theme.of(context).textTheme.bodyLarge),
+                    horizontalTitleGap: 0.0,
+                    onTap: () {},
+                  ),
+                  ListTile(
                     title: Text("Log out",
                         style: Theme.of(context).textTheme.bodyLarge),
                     horizontalTitleGap: 0.0,

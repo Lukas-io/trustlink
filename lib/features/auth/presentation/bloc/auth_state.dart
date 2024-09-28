@@ -1,7 +1,9 @@
 import 'package:trustlink/features/auth/data/models/user_token_model.dart';
 
 abstract class AuthState<T> {
-  const AuthState();
+  const AuthState({this.hidden = false});
+
+  final bool hidden;
 }
 
 class AuthInitial extends AuthState {

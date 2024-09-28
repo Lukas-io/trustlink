@@ -12,36 +12,30 @@ class ApiEndpoints {
 
   static const userDetails = 'api/me';
 
-  //-------------------- ACCOUNT --------------------//
-  // static const allBanks = "api/account";
-  // static const bidPrice = "api/account";
-  // static const acceptBid = "rides/accept-decline-bid";
+  // -------------------- ACCOUNT --------------------//
+  static const allBanks = "api/account";
+  static const saveAccount = "api/account";
+  static const updateAccount = "api/account";
 
   //-------------------- WALLET --------------------//
   static const createWallet = "api/wallet";
-  static const requestRide = "api/wallet";
+  static const getWallet = "api/wallet";
+  static const updatePin = "api/wallet";
+  static const withdraw = "api/withdraw";
+  static const generateAccount = "api/deposit/transfer";
+  static const cardDeposit = "api/deposit/card";
+  static const getWalletHistory = "api/wallet/history";
+  static const getHistoryById = "api/api/history/{id}";
+  static const walletPay = "api/wallet/pay";
+  static const generateLink = "api/generate";
 
-  //-------------------- WALLET --------------------//
-  static const getWalletBalance = "users/wallet/balance";
-  static const fundWallet = "wallet/fund-wallet";
-  static const verifyPayment = "wallet/verifyPayment";
-  static const payTrip = "wallet/trip-pay";
-
-  // ASK SAMUEL THE MEANING OF THIS API
-  static const rateDriver = "rides/rides/review";
-
-// ASK SAMUEL HOW TO DIFFERENTIATE BETWEEN RIDER AND DRIVER.
-
-  //-------------------- ETRIKE --------------------//
-  static const fetchLocationsWithinSchool = 'etrike/locations-by-school';
-  static const etrikeRideRequest = 'etrike/fetch-price';
-  static const etrikeFindDrivers = 'etrike/find-ride';
-
-  //-------------------- LOCATION --------------------//
-  static const googleMapsAutoCompleteBaseUrl =
-      'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-  static const googleMapsPlaceDetailsBaseUrl =
-      'https://maps.googleapis.com/maps/api/place/details/json';
-  static const googleMapsDirectionBaseUrl =
-      'https://maps.googleapis.com/maps/api/directions/json';
+  //-------------------- TRANSACTION --------------------//
+  static const verifyTransaction = "api/verify-transaction/{id}";
+  static const requestRefund = "api/dispute-transaction/{id}";
+  static const completeRefund = "api/dispute-transaction/{id}";
+  static const getRefundTransaction = "api/dispute-transaction/{id}";
+  static const getTransactionById = "api/verify-transaction/{id}";
+  static const getOutgoingTransaction = "api/outgoing/trans";
+  static const getIngoingTransaction = "api/outgoing/trans";
+  static const getTransactionHistory = "api/trans/history";
 }

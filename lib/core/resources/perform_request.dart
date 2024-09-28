@@ -15,9 +15,9 @@ Future<DataState<T>> performRequest<T>(Future<HttpResponse<T>> request) async {
         .contains(httpResponse.response.statusCode)) {
       return DataSuccess(httpResponse.data);
     } else {
-      final responseModel = ResponseModel.fromJson(
-          jsonDecode(httpResponse.response.toString()),
-          (json) => json as dynamic);
+      final jsonData = jsonDecode(httpResponse.response.toString());
+      final responseModel =
+          ResponseModel.fromJson(jsonData, (json) => json as dynamic);
       String errorMessage = responseModel.message ??
           _handleBadResponse(httpResponse.response.statusCode);
       return DataException(

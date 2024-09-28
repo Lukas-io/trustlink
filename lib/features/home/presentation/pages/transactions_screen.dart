@@ -19,11 +19,27 @@ class TransactionsScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [RecentTransactions()],
-          ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 60.0,
+              child: ListView(
+                padding: EdgeInsets.only(left: 20.0),
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 12.0),
+                    child: FilterChip(
+                      label: Text("Pending"),
+                      selected: true,
+                      onSelected: (bool value) {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            RecentTransactions()
+          ],
         ),
       ),
     );

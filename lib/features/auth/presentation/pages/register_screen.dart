@@ -37,6 +37,7 @@ class RegisterScreen extends StatelessWidget {
           );
         }
       }, builder: (context, state) {
+        bool obscure = true;
         return Scaffold(
           appBar: AppBar(),
           body: SingleChildScrollView(
@@ -138,19 +139,25 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
-                    child: TextField(
-                      autofillHints: const [AutofillHints.password],
-                      controller: TextEditingController(text: password),
-                      obscureText: true,
-                      onChanged: (text) {
-                        password = text;
-                      },
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        hintText: "Password",
-                        prefixIcon: Icon(Icons.lock_outline_rounded),
-                      ),
-                    ),
+                    child: StatefulBuilder(builder: (context, setState) {
+                      return TextField(
+                        autofillHints: const [AutofillHints.password],
+                        obscureText: obscure,
+                        keyboardType: TextInputType.emailAddress,
+                        controller: TextEditingController(text: password),
+                        decoration: InputDecoration(
+                            hintText: "Password",
+                            prefixIcon: const Icon(Icons.lock_outline_rounded),
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() => obscure = !obscure);
+                                },
+                                icon: Icon(obscure
+                                    ? CupertinoIcons.eye_fill
+                                    : CupertinoIcons.eye_slash_fill))),
+                        onChanged: (text) => password = text,
+                      );
+                    }),
                   ),
                   Container(
                     width: double.infinity,
@@ -168,21 +175,14 @@ class RegisterScreen extends StatelessWidget {
                             message: "Enter values for all the fields",
                           );
                         } else {
-                          // sl<AuthBloc>().add(RegisterEvent(
-                          //   phone: firstName,
-                          //   firstName: lastName,
-                          //   lastName: userName,
-                          //   email: email,
-                          //   username: password,
-                          //   password: phone,
-                          // ));
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => VerifyMailScreen(
-                                email: email,
-                              ),
-                            ),
-                          );
+                          sl<AuthBloc>().add(RegisterEvent(
+                            phone: phone,
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            username: userName,
+                            password: password,
+                          ));
                         }
                       },
                       style: ElevatedButton.styleFrom(
