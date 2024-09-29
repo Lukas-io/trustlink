@@ -7,6 +7,9 @@ import 'injection_container.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
+  // HydratedBloc.storage = await HydratedStorage.build(
+  //   storageDirectory: await getTemporaryDirectory(),
+  // );
 
   runApp(const MyApp());
 }

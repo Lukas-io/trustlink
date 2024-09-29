@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../model/response_model.dart';
@@ -31,12 +32,21 @@ Future<DataState<T>> performRequest<T>(Future<HttpResponse<T>> request) async {
       );
     }
   } on DioException catch (e) {
-    print(e);
-    final responseModel = ResponseModel.fromJson(
-        jsonDecode(e.response.toString()), (json) => json as dynamic);
-    String errorMessage = responseModel.message ?? _handleDioError(e);
-    print('Error message from response: ${responseModel.message}');
-    Global.showToastMessage(message: errorMessage);
+    debugPrint(e.toString());
+    String errorMessage;
+
+    try {
+      final responseModel = ResponseModel.fromJson(
+          jsonDecode(e.response.toString()), (json) => json as dynamic);
+      errorMessage = responseModel.message ?? _handleDioError(e);
+      debugPrint('Error message from response: ${responseModel.message}');
+
+      Global.showErrorMessage(message: errorMessage);
+    } catch (error) {
+      Global.showErrorMessage(
+          message: "An internal error occurred, Try again later!");
+      errorMessage = _handleDioError(e);
+    }
     return DataException(
       DioException(
         requestOptions: e.requestOptions,

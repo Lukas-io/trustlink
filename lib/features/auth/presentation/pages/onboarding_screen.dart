@@ -46,7 +46,7 @@ class OnboardingScreen extends StatelessWidget {
         width: double.infinity,
         margin: EdgeInsets.symmetric(
           horizontal: 16.0,
-          vertical: MediaQuery.of(context).padding.bottom,
+          vertical: MediaQuery.of(context).padding.bottom + 12.0,
         ),
         child: ElevatedButton(
           onPressed: () {
@@ -108,7 +108,7 @@ class OnboardingPage extends StatelessWidget {
             body,
             style: Theme.of(context)
                 .textTheme
-                .bodyLarge
+                .bodyMedium
                 ?.copyWith(color: AppColors.white),
           ),
         ],

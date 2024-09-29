@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:trustlink/features/home/presentation/components/recent_transactions.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TransactionsScreen extends StatelessWidget {
+import '../../../../injection_container.dart';
+import '../../data/models/transaction/transaction_model.dart';
+import '../bloc/account_bloc.dart';
+import '../bloc/account_event.dart';
+import '../bloc/account_state.dart';
+import '../components/animated_transaction_list.dart';
+
+class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({super.key});
+
+  @override
+  State<TransactionsScreen> createState() => _TransactionsScreenState();
+}
+
+class _TransactionsScreenState extends State<TransactionsScreen> {
+  late ScrollController controller;
+
+  @override
+  void initState() {
+    controller = ScrollController();
+    sl<AccountBloc>().add(GetTransactionsEvent());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,29 +40,45 @@ class TransactionsScreen extends StatelessWidget {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 60.0,
-              child: ListView(
-                padding: EdgeInsets.only(left: 20.0),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 12.0),
-                    child: FilterChip(
-                      label: Text("Pending"),
-                      selected: true,
-                      onSelected: (bool value) {},
-                    ),
-                  ),
-                ],
-              ),
+      body: BlocProvider<AccountBloc>.value(
+        value: sl<AccountBloc>(),
+        child: BlocBuilder<AccountBloc, AccountState>(
+            buildWhen: (previous, current) {
+          print({previous, current});
+          if (current
+              is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+            return true;
+          }
+          if (current is AccountLoading<GetTransactionsEvent>) {
+            return true;
+          }
+          if (current is AccountException<GetTransactionsEvent>) {
+            return true;
+          }
+          return false;
+        }, builder: (context, state) {
+          List<TransactionModel> transactions = [];
+          if (state
+              is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+            transactions = state.data!;
+          }
+
+          return SingleChildScrollView(
+            controller: state is AccountLoading<GetTransactionsEvent>
+                ? null
+                : controller,
+            child: Column(
+              children: [
+                AnimatedTransactionList(
+                  controller: controller,
+                  transactions: transactions,
+                  state: state,
+                ),
+                Padding(padding: MediaQuery.paddingOf(context)),
+              ],
             ),
-            RecentTransactions()
-          ],
-        ),
+          );
+        }),
       ),
     );
   }

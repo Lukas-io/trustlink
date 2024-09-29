@@ -23,12 +23,13 @@ class HomeScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              WalletWidget(),
-              QuickItems(),
-              RecentTransactions(),
+              const WalletWidget(),
+              const QuickItems(),
+              const RecentTransactions(),
+              Padding(padding: MediaQuery.paddingOf(context)),
             ],
           ),
         ),

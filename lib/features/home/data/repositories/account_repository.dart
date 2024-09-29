@@ -24,11 +24,15 @@ class AccountRepository {
     return performRequest(_accountApiService.getWallet());
   }
 
+  Future<DataState<ResponseModel<BanksBean>>> getUserBank() {
+    return performRequest(_accountApiService.getUserBank());
+  }
+
   Future<DataState<WalletHistoryModel>> getWalletHistory() {
     return performRequest(_accountApiService.getWalletHistory());
   }
 
-  Future<DataState<ResponseModel<TransactionModel>>> getTransactions() {
+  Future<DataState<ResponseModel<List<TransactionModel>>>> getTransactions() {
     return performRequest(_accountApiService.getTransactions());
   }
 
@@ -57,9 +61,26 @@ class AccountRepository {
   }
 
   Future<DataState<CardDepositModel>> cardDeposit(Map<String, dynamic> body) {
+    print(body);
     return performRequest(_accountApiService.cardDeposit(body: body));
   }
 
+//
+//   {
+//   "number":"4084127883172787",
+//   "cvv":"123",
+//   "expiry_month":"09",
+//   "expiry_year":"30",
+//   "amount":900000
+//   }
+//   {
+//   "number": "408412788317278",
+//   "cvv": "123",
+//   "expiry_month": "09",
+//   "expiry_year": "30",
+//     "amount": 3233223
+//
+// }
   Future<DataState<ResponseModel>> withdraw(Map<String, dynamic> body) {
     return performRequest(_accountApiService.withdraw(body: body));
   }
@@ -74,8 +95,15 @@ class AccountRepository {
     return performRequest(_accountApiService.generateLink(body: body));
   }
 
-  Future<DataState<ResponseModel>> requestRefund(Map<String, dynamic> body) {
-    return performRequest(_accountApiService.requestRefund(body: body));
+  Future<DataState<ResponseModel>> verifyTransaction(
+      Map<String, dynamic> body, String id) {
+    return performRequest(
+        _accountApiService.verifyTransaction(body: body, id: id));
+  }
+
+  Future<DataState<ResponseModel>> requestRefund(
+      Map<String, dynamic> body, String id) {
+    return performRequest(_accountApiService.requestRefund(body: body, id: id));
   }
 
 // Future<DataState<GeneratedBank>> generateAccount(Map<String, dynamic> body) {

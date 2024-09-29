@@ -23,8 +23,11 @@ abstract class AccountApiService {
   @GET(ApiEndpoints.allBanks)
   Future<HttpResponse<BankModel>> getAllBanks();
 
+  @GET(ApiEndpoints.getUserBank)
+  Future<HttpResponse<ResponseModel<BanksBean>>> getUserBank();
+
   @GET(ApiEndpoints.getTransactionHistory)
-  Future<HttpResponse<ResponseModel<TransactionModel>>> getTransactions();
+  Future<HttpResponse<ResponseModel<List<TransactionModel>>>> getTransactions();
 
   @GET(ApiEndpoints.getWalletHistory)
   Future<HttpResponse<WalletHistoryModel>> getWalletHistory();
@@ -75,8 +78,15 @@ abstract class AccountApiService {
     @Body() required Map<String, dynamic> body,
   });
 
+  @POST(ApiEndpoints.verifyTransaction)
+  Future<HttpResponse<ResponseModel>> verifyTransaction({
+    @Body() required Map<String, dynamic> body,
+    @Path() required String id,
+  });
+
   @POST(ApiEndpoints.requestRefund)
   Future<HttpResponse<ResponseModel>> requestRefund({
     @Body() required Map<String, dynamic> body,
+    @Path() required String id,
   });
 }

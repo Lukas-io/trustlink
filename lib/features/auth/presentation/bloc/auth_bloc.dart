@@ -13,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerifyMailEvent>(onVerifyMail);
     on<RegisterEvent>(onRegister);
     on<ResendOTPEvent>(onResendOTP);
+    on<ResetPasswordEvent>(onResetPassword);
   }
 
   void onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -67,6 +68,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     if (dataState is DataSuccess) {
       emit(const AuthSuccess<ResendOTPEvent>());
+    } else {
+      emit(AuthException((dataState.exception!).message!));
+    }
+  }
+
+  void onResetPassword(
+      ResetPasswordEvent event, Emitter<AuthState> emit) async {
+    emit(const AuthLoading<ResetPasswordEvent>());
+    final dataState = await _authRepository.resetPassword({
+      "email": event.email,
+    });
+    if (dataState is DataSuccess) {
+      emit(const AuthSuccess<ResetPasswordEvent>());
     } else {
       emit(AuthException((dataState.exception!).message!));
     }

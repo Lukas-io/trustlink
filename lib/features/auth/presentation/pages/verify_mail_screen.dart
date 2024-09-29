@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trustlink/core/resources/global.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_event.dart';
 import 'package:trustlink/features/home/presentation/pages/set_pin_screen.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/resources/interceptor.dart';
 import '../../../../injection_container.dart';
 import '../bloc/auth_state.dart';
 import '../components/pin_widget.dart';
@@ -23,9 +26,13 @@ class VerifyMailScreen extends StatelessWidget {
       child: BlocConsumer<AuthBloc, AuthState>(
           listener: (BuildContext context, AuthState<dynamic> state) {
         if (state is AuthSuccess<ResendOTPEvent>) {
-          Global.showToastMessage(message: "OTP sent successfully");
+          Global.showResponseMessage(message: "OTP sent successfully");
         }
         if (state is AuthSuccess<VerifyMailEvent>) {
+          final String token = state.user!.token!;
+          sl<SharedPreferences>().setString("bearer", token);
+          sl<Dio>().interceptors.add(AuthInterceptor(token));
+          Global.showResponseMessage(message: "Email Verified Successfully!");
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const SetPinScreen(),
@@ -42,9 +49,11 @@ class VerifyMailScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 24.0,
+                  Text(
+                    "An OTP has been sent to $email, Kindly input the code below",
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
+                  const SizedBox(height: 12.0),
                   PinWidget(
                     digits: 6,
                     onPinEntered: (pinList) {
@@ -58,7 +67,7 @@ class VerifyMailScreen extends StatelessWidget {
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (otp.length < 6) {
-                          Global.showToastMessage(
+                          Global.showErrorMessage(
                               message: "Please fill all the fields");
                         } else {
                           sl<AuthBloc>()
@@ -105,7 +114,7 @@ class VerifyMailScreen extends StatelessWidget {
                                   .textTheme
                                   .bodyLarge
                                   ?.copyWith(
-                                      color: AppColors.primary,
+                                      color: AppColors.secondary,
                                       fontWeight: FontWeight.w600),
                             )
                           ]),

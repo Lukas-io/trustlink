@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trustlink/core/constants/app_colors.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_event.dart';
@@ -9,6 +11,7 @@ import 'package:trustlink/features/auth/presentation/pages/register_screen.dart'
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/resources/global.dart';
+import '../../../../core/resources/interceptor.dart';
 import '../../../../injection_container.dart';
 import '../../../home/presentation/home.dart';
 
@@ -17,17 +20,17 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String email = "olakay739@gmail.com";
-    String password = "Ibukunoluwa.1";
+    String email = "techintern";
+    String password = "Asdfghjkl;";
 
     return BlocProvider<AuthBloc>.value(
         value: sl<AuthBloc>(),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (BuildContext context, AuthState<dynamic> state) {
             if (state is AuthSuccess<LoginEvent>) {
-              // sl<SharedPreferences>().setString("token", state.response.token!);
-
-              // sl<Dio>().interceptors.add(AuthInterceptor(state.response.token!));
+              final String? token = state.user?.token!;
+              sl<SharedPreferences>().setString("bearer", token!);
+              sl<Dio>().interceptors.add(AuthInterceptor(token));
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => const Home(),
@@ -39,9 +42,8 @@ class LoginScreen extends StatelessWidget {
             bool obscure = true;
 
             return Scaffold(
-              appBar: AppBar(),
-              body: SafeArea(
-                child: SingleChildScrollView(
+              body: SingleChildScrollView(
+                child: SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: Column(
@@ -102,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                             onPressed: () {
                               FocusManager.instance.primaryFocus?.unfocus();
                               if (email.isEmpty || password.isEmpty) {
-                                Global.showToastMessage(
+                                Global.showErrorMessage(
                                   message:
                                       "Please enter a valid field for email & password",
                                 );
@@ -155,7 +157,7 @@ class LoginScreen extends StatelessWidget {
                                         .textTheme
                                         .bodyLarge
                                         ?.copyWith(
-                                            color: AppColors.primary,
+                                            color: AppColors.secondary,
                                             fontWeight: FontWeight.w600),
                                   )
                                 ]),

@@ -16,6 +16,7 @@ class ApiEndpoints {
   static const allBanks = "api/account";
   static const saveAccount = "api/account";
   static const updateAccount = "api/account";
+  static const getUserBank = "api/my/account";
 
   //-------------------- WALLET --------------------//
   static const createWallet = "api/wallet";

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import '../constants/app_colors.dart';
 
@@ -14,20 +16,19 @@ class Global {
     // overlay.hide();
   }
 
-  //
-  // static String formatCurrency(String price, [bool removeDecimalZero = true]) {
-  //   final formatter = NumberFormat.currency(locale: 'en_NG', symbol: '₦');
-  //   double value = double.tryParse(price) ?? 0;
-  //   String formattedPrice = formatter.format(value);
-  //
-  //   if (removeDecimalZero) {
-  //     // Remove the decimal point and trailing zeros
-  //     if (formattedPrice.contains('.')) {
-  //       formattedPrice = formattedPrice.replaceAll(RegExp(r'\.0+'), '');
-  //     }
-  //   }
-  //   return formattedPrice;
-  // }
+  static String formatCurrency(String price, [bool removeDecimalZero = true]) {
+    final formatter = NumberFormat.currency(locale: 'en_NG', symbol: '₦');
+    double value = double.tryParse(price) ?? 0;
+    String formattedPrice = formatter.format(value);
+
+    if (removeDecimalZero) {
+      // Remove the decimal point and trailing zeros
+      if (formattedPrice.contains('.')) {
+        formattedPrice = formattedPrice.replaceAll(RegExp(r'\.0+'), '');
+      }
+    }
+    return formattedPrice;
+  }
 
   // static void showAppLoader({required WidgetRef ref}) {
   //   final context = ref.read(mainKeyProvider).currentContext;
@@ -85,15 +86,30 @@ class Global {
     //         ));
   }
 
-  static showToastMessage({required String message, color = AppColors.error}) {
+  static showErrorMessage({required String message}) {
+    HapticFeedback.mediumImpact();
     Fluttertoast.cancel();
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.TOP,
-        //timeInSecForIosWeb: 1,
-        backgroundColor: color.withOpacity(.9),
-        textColor: Colors.white,
+        timeInSecForIosWeb: 4,
+        backgroundColor: AppColors.error,
+        textColor: AppColors.white,
+        fontSize: 16.0);
+  }
+
+  static showResponseMessage({required String message}) {
+    HapticFeedback.mediumImpact();
+
+    Fluttertoast.cancel();
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 4,
+        backgroundColor: AppColors.secondary,
+        textColor: AppColors.bg,
         fontSize: 16.0);
   }
 
@@ -170,7 +186,7 @@ class Global {
             "Currently unavailable. Hang tight, good things come to those who wait!",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
-        //timeInSecForIosWeb: 1,
+        timeInSecForIosWeb: 3,
         backgroundColor: AppColors.primary,
         textColor: Colors.black,
         fontSize: 16);
@@ -225,31 +241,109 @@ extension DateTimeExtension on DateTime {
   String get monthShort {
     switch (month) {
       case 1:
-        return 'Jan';
+        return 'January';
       case 2:
-        return 'Feb';
+        return 'February';
       case 3:
-        return 'Mar';
+        return 'March';
       case 4:
-        return 'Apr';
+        return 'April';
       case 5:
         return 'May';
       case 6:
-        return 'Jun';
+        return 'June';
       case 7:
-        return 'Jul';
+        return 'July';
       case 8:
-        return 'Aug';
+        return 'August';
       case 9:
-        return 'Sep';
+        return 'September';
       case 10:
-        return 'Oct';
+        return 'October';
       case 11:
-        return 'Nov';
+        return 'November';
       case 12:
-        return 'Dec';
+        return 'December';
       default:
         return '';
     }
+  }
+}
+
+class CreditCardFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String text = newValue.text
+        .replaceAll(RegExp(r'\D'), ''); // Remove non-digit characters
+    String formattedText = '';
+
+    if (text.length > 16) {
+      text = text.substring(0, 16); // Limit the input to 4 digits
+    }
+    for (int i = 0; i < text.length; i++) {
+      if (i % 4 == 0 && i != 0) {
+        formattedText += ' '; // Add space every 4 characters
+      }
+      formattedText += text[i];
+    }
+
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
+    );
+  }
+}
+
+class ExpiryDateFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String text = newValue.text
+        .replaceAll(RegExp(r'\D'), ''); // Remove non-digit characters
+
+    if (text.length > 4) {
+      text = text.substring(0, 4); // Limit the input to 4 digits
+    }
+
+    if (text.length >= 3) {
+      text = '${text.substring(0, 2)}/${text.substring(2)}'; // Format as MM/YY
+    }
+
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
+}
+
+class ThousandsSeparatorInputFormatter extends TextInputFormatter {
+  final NumberFormat _formatter = NumberFormat.decimalPattern();
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String newText = newValue.text;
+
+    if (newText.isEmpty) return newValue;
+
+    newText = newText.replaceAll(',', '');
+
+    final int? value = int.tryParse(newText);
+    if (value == null) {
+      return oldValue;
+    } // If the input is invalid, keep the old value
+
+    // Format the number with commas
+    final String formattedText = _formatter.format(value);
+
+    // Create the new cursor position
+    final int newSelectionIndex =
+        formattedText.length - (newValue.text.length - newValue.selection.end);
+
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: newSelectionIndex),
+    );
   }
 }

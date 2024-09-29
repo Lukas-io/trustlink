@@ -8,7 +8,7 @@ import 'features/auth/data/sources/auth_api_service.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/home/data/repositories/account_repository.dart';
 import 'features/home/data/sources/account_api_service.dart';
-import 'features/home/presentation/bloc/account/account_bloc.dart';
+import 'features/home/presentation/bloc/account_bloc.dart';
 
 final sl = GetIt.instance;
 

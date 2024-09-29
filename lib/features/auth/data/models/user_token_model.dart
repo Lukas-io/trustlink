@@ -5,6 +5,7 @@ part 'user_token_model.g.dart';
 
 @JsonSerializable()
 class UserTokenModel {
+  @JsonKey(name: "access_token")
   final String? token;
   final UserModel? user;
 

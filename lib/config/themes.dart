@@ -7,6 +7,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.bg,
       appBarTheme: const AppBarTheme(backgroundColor: AppColors.bg),
       // chipTheme: ,
+
       useMaterial3: true,
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.bg,
@@ -17,6 +18,7 @@ class AppTheme {
       colorScheme: ColorScheme.fromSwatch(
           primarySwatch: AppColors.mainColor,
           backgroundColor: AppColors.white,
+          accentColor: AppColors.secondary,
           cardColor: AppColors.white,
           errorColor: AppColors.error),
       outlinedButtonTheme: OutlinedButtonThemeData(

@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PinWidget extends StatelessWidget {
   final int digits;
-  final Function(List<String>) onPinEntered;
+  final void Function(List<String>) onPinEntered;
   final bool obscure;
 
   const PinWidget(
@@ -35,6 +36,9 @@ class PinWidget extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 controller: textC,
                 textAlign: TextAlign.center,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 autofocus: true,
                 decoration: const InputDecoration(),
                 focusNode: currentIndex == index ? node : null,
@@ -43,15 +47,17 @@ class PinWidget extends StatelessWidget {
                     .headlineLarge
                     ?.copyWith(fontWeight: FontWeight.w600),
                 onChanged: (text) {
-                  textC.text = text.split("").last;
-                  stringList[index] = textC.text;
+                  if (text.isNotEmpty) {
+                    textC.text = text.split("").last;
+                    stringList[index] = textC.text;
 
-                  Timer(const Duration(milliseconds: 400), () {
-                    textC.text = "*";
-                  });
+                    Timer(const Duration(milliseconds: 400), () {
+                      textC.text = "*";
+                    });
 
-                  onPinEntered(stringList);
-                  node.nextFocus();
+                    onPinEntered(stringList);
+                    node.nextFocus();
+                  }
                 },
                 onTapOutside: (event) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
