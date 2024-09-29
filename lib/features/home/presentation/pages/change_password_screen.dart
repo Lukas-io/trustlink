@@ -42,7 +42,6 @@ class ChangePasswordScreen extends StatelessWidget {
                   return TextField(
                     autofillHints: const [AutofillHints.password],
                     obscureText: oldPasswordObscure,
-                    keyboardType: TextInputType.emailAddress,
                     autofocus: true,
                     decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock_outline_rounded),
@@ -65,7 +64,6 @@ class ChangePasswordScreen extends StatelessWidget {
                   return TextField(
                     autofillHints: const [AutofillHints.password],
                     obscureText: newPasswordObscure,
-                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                         hintText: "New Password",
                         prefixIcon: const Icon(Icons.lock_outline_rounded),
@@ -87,7 +85,6 @@ class ChangePasswordScreen extends StatelessWidget {
                   return TextField(
                     autofillHints: const [AutofillHints.password],
                     obscureText: confirmObscure,
-                    keyboardType: TextInputType.emailAddress,
                     controller: TextEditingController(text: confirm),
                     decoration: InputDecoration(
                         hintText: "Confirm Password",

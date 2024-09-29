@@ -136,7 +136,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     emit(const AccountLoading<CompleteRefundEvent>());
     final dataState = await _accountRepository.completeRefund({
       "code": event.code,
-    });
+    }, event.id);
     if (dataState is DataSuccess) {
       emit(AccountSuccess<CompleteRefundEvent, String>(
           data: dataState.data!.message!));
@@ -252,7 +252,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final dataState = await _accountRepository.requestRefund(
       {
         "reason": event.reason,
-        "proof": event.proof,
+        // "proof": event.proof,
       },
       event.id,
     );

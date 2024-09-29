@@ -45,8 +45,10 @@ abstract class AccountApiService {
       {@Body() required Map<String, dynamic> body});
 
   @PUT(ApiEndpoints.completeRefund)
-  Future<HttpResponse<ResponseModel>> completeRefund(
-      {@Body() required Map<String, dynamic> body});
+  Future<HttpResponse<ResponseModel>> completeRefund({
+    @Body() required Map<String, dynamic> body,
+    @Path() required String id,
+  });
 
   @POST(ApiEndpoints.createWallet)
   Future<HttpResponse<ResponseModel>> createWallet({

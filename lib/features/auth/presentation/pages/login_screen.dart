@@ -31,6 +31,8 @@ class LoginScreen extends StatelessWidget {
             if (state is AuthSuccess<LoginEvent>) {
               final String? token = state.user?.token!;
               sl<SharedPreferences>().setString("bearer", token!);
+              sl<SharedPreferences>()
+                  .setString("email", state.user!.user!.email!);
               sl<Dio>().interceptors.add(AuthInterceptor(token));
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(

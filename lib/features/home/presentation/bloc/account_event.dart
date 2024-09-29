@@ -48,9 +48,11 @@ class UpdatePinEvent extends AccountEvent {
 
 class CompleteRefundEvent extends AccountEvent {
   final String code;
+  final String id;
 
   const CompleteRefundEvent({
     required this.code,
+    required this.id,
   });
 }
 
@@ -118,13 +120,13 @@ class GenerateLinkEvent extends AccountEvent {
 
 class RequestRefundEvent extends AccountEvent {
   final String id;
-  final num reason;
-  final File proof;
+  final String reason;
+  final File? proof;
 
   const RequestRefundEvent({
     required this.id,
     required this.reason,
-    required this.proof,
+    this.proof,
   });
 }
 

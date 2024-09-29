@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trustlink/features/home/presentation/components/info_dialog.dart';
 
 import '../../../../injection_container.dart';
 import '../../data/models/transaction/transaction_model.dart';
@@ -38,10 +39,15 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         elevation: 0.0,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 24,
-        actions: const [
+        actions: [
           Padding(
             padding: EdgeInsets.only(right: 24.0),
-            child: Icon(Icons.info_outline),
+            child: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context, builder: (context) => InfoDialog());
+                },
+                icon: Icon(Icons.info_outline)),
           )
         ],
       ),

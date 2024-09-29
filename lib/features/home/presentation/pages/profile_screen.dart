@@ -4,7 +4,6 @@ import 'package:trustlink/core/constants/app_colors.dart';
 import 'package:trustlink/features/auth/presentation/pages/login_screen.dart';
 import 'package:trustlink/features/home/presentation/components/profile_widget.dart';
 import 'package:trustlink/features/home/presentation/pages/change_password_screen.dart';
-import 'package:trustlink/features/home/presentation/pages/change_pin_screen.dart';
 
 import '../../../../injection_container.dart';
 
@@ -41,13 +40,13 @@ class ProfileScreen extends StatelessWidget {
                           builder: (context) => const ChangePasswordScreen()));
                     },
                   ),
-                  ListTile(
-                    title: const Text("Change Pin"),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ChangePinScreen()));
-                    },
-                  ),
+                  // ListTile(
+                  //   title: const Text("Change Pin"),
+                  //   onTap: () {
+                  //     Navigator.of(context).push(MaterialPageRoute(
+                  //         builder: (context) => const ChangePinScreen()));
+                  //   },
+                  // ),
                   ListTile(
                     title: const Text(
                       "Log out",

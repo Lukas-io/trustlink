@@ -15,7 +15,7 @@ class ChangePinScreen extends StatelessWidget {
     String oldPassword = "";
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Change Password"),
+        title: const Text("Change Pin"),
       ),
       body: BlocProvider<AccountBloc>.value(
         value: sl<AccountBloc>(),

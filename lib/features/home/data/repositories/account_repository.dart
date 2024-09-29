@@ -48,8 +48,12 @@ class AccountRepository {
     return performRequest(_accountApiService.updatePin(body: body));
   }
 
-  Future<DataState<ResponseModel>> completeRefund(Map<String, dynamic> body) {
-    return performRequest(_accountApiService.completeRefund(body: body));
+  Future<DataState<ResponseModel>> completeRefund(
+      Map<String, dynamic> body, String id) {
+    return performRequest(_accountApiService.completeRefund(
+      id: id,
+      body: body,
+    ));
   }
 
   Future<DataState<ResponseModel>> createWallet(Map<String, dynamic> body) {

@@ -31,6 +31,8 @@ class VerifyMailScreen extends StatelessWidget {
         if (state is AuthSuccess<VerifyMailEvent>) {
           final String token = state.user!.token!;
           sl<SharedPreferences>().setString("bearer", token);
+          sl<SharedPreferences>().setString("email", state.user!.user!.email!);
+
           sl<Dio>().interceptors.add(AuthInterceptor(token));
           Global.showResponseMessage(message: "Email Verified Successfully!");
           Navigator.of(context).pushReplacement(
