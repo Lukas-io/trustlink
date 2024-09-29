@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:trustlink/features/home/presentation/bloc/account_event.dart';
 import 'package:trustlink/features/home/presentation/bloc/account_state.dart';
@@ -6,41 +7,31 @@ import 'package:trustlink/features/home/presentation/components/transaction_tile
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/resources/enums.dart';
+import '../../../../injection_container.dart';
 import '../../data/models/transaction/transaction_model.dart';
+import '../bloc/account_bloc.dart';
 import '../pages/fliter_widget.dart';
 
-class AnimatedTransactionList extends StatefulWidget {
+class AnimatedTransactionList extends StatelessWidget {
   final ScrollController controller;
   final List<TransactionModel> transactions;
   final AccountState state;
 
-  const AnimatedTransactionList(
+  AnimatedTransactionList(
       {super.key,
       required this.controller,
       required this.transactions,
       required this.state});
 
-  @override
-  State<AnimatedTransactionList> createState() =>
-      _AnimatedTransactionListState();
-}
-
-class _AnimatedTransactionListState extends State<AnimatedTransactionList> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  late List<TransactionModel> _filteredTransactions;
-
-  @override
-  void initState() {
-    super.initState();
-    _filteredTransactions = List.from(widget.transactions);
-  }
+  late List<TransactionModel> _filteredTransactions = List.from(transactions);
 
   void _filterTransactions(TransactionStatus filter) {
     final List<TransactionModel> newList;
     if (filter == TransactionStatus.all) {
-      newList = widget.transactions;
+      newList = transactions;
     } else {
-      newList = widget.transactions
+      newList = transactions
           .where((transaction) => transaction.status == filter)
           .toList();
     }
@@ -92,59 +83,80 @@ class _AnimatedTransactionListState extends State<AnimatedTransactionList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FilterWidget(onFilter: (status) {
-          _filterTransactions(status);
-        }),
-        if (widget.state is! AccountException<GetTransactionsEvent>)
-          SizedBox(
-            height: 900.0,
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: widget.state is AccountLoading<GetTransactionsEvent>
-                    ? Shimmer.fromColors(
-                        baseColor: AppColors.secondary,
-                        highlightColor: AppColors.bg,
-                        child: ListView.separated(
-                            padding: const EdgeInsets.only(top: 4),
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return const ShimmerTransactionTile();
-                            },
-                            shrinkWrap: true,
-                            separatorBuilder: (context, index) {
-                              return const Divider(
-                                height: 0.0,
-                                color: AppColors.grey,
-                                thickness: 0.2,
-                              );
-                            },
-                            itemCount: 8),
-                      )
-                    : widget.transactions.isEmpty
-                        ? const Text("No Transactions yet!")
-                        : AnimatedList(
-                            controller: widget.controller,
-                            padding: const EdgeInsets.only(top: 4),
-                            key: _listKey,
-                            initialItemCount: _filteredTransactions.length,
-                            itemBuilder: (context, index, animation) {
-                              return Column(
-                                children: [
-                                  _buildItem(
-                                      _filteredTransactions[index], animation),
-                                  const Divider(
+    return BlocProvider<AccountBloc>.value(
+      value: sl<AccountBloc>(),
+      child: BlocListener<AccountBloc, AccountState>(
+        listener: (previous, current) {
+          if (current
+              is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+            _filteredTransactions = current.data!;
+          }
+          if (current is AccountLoading<GetTransactionsEvent>) {}
+          if (current is AccountException<GetTransactionsEvent>) {}
+        },
+        child: Column(
+          children: [
+            FilterWidget(onFilter: (status) {
+              _filterTransactions(status);
+            }),
+            if (state is! AccountException<GetTransactionsEvent>)
+              Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: state is AccountLoading<GetTransactionsEvent>
+                        ? Shimmer.fromColors(
+                            baseColor: AppColors.secondary,
+                            highlightColor: AppColors.bg,
+                            child: ListView.separated(
+                                padding: const EdgeInsets.only(top: 4),
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return const ShimmerTransactionTile();
+                                },
+                                shrinkWrap: true,
+                                separatorBuilder: (context, index) {
+                                  return const Divider(
                                     height: 0.0,
                                     color: AppColors.grey,
                                     thickness: 0.2,
-                                  ),
-                                ],
-                              );
-                            },
-                          )),
-          ),
-      ],
+                                  );
+                                },
+                                itemCount: 8),
+                          )
+                        : _filteredTransactions.isEmpty
+                            ? const Center(
+                                child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 24.0),
+                                child: Text("No Transactions yet!"),
+                              ))
+                            : AnimatedList(
+                                controller: controller,
+                                padding: const EdgeInsets.only(top: 4),
+                                key: _listKey,
+                                initialItemCount: _filteredTransactions.length,
+                                itemBuilder: (context, index, animation) {
+                                  return Column(
+                                    children: [
+                                      _buildItem(_filteredTransactions[index],
+                                          animation),
+                                      const Divider(
+                                        height: 0.0,
+                                        color: AppColors.grey,
+                                        thickness: 0.2,
+                                      ),
+                                      if (index ==
+                                          _filteredTransactions.length - 1)
+                                        Padding(
+                                            padding:
+                                                MediaQuery.of(context).padding)
+                                    ],
+                                  );
+                                },
+                              )),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

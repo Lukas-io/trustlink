@@ -48,6 +48,18 @@ class ResendOTPEvent extends AuthEvent {
   });
 }
 
+class ChangePasswordEvent extends AuthEvent {
+  final String oldPassword;
+  final String newPassword;
+  final String confirm;
+
+  const ChangePasswordEvent({
+    required this.oldPassword,
+    required this.newPassword,
+    required this.confirm,
+  });
+}
+
 class GetUserEvent extends AuthEvent {}
 
 class ResetPasswordEvent extends AuthEvent {

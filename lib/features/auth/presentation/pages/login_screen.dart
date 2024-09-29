@@ -7,6 +7,7 @@ import 'package:trustlink/core/constants/app_colors.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_event.dart';
 import 'package:trustlink/features/auth/presentation/bloc/auth_state.dart';
+import 'package:trustlink/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:trustlink/features/auth/presentation/pages/register_screen.dart';
 
 import '../../../../core/constants/app_assets.dart';
@@ -96,6 +97,29 @@ class LoginScreen extends StatelessWidget {
                             onChanged: (text) => password = text,
                           );
                         }),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen(),
+                              ),
+                            );
+                          },
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              "Forgot password",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(color: AppColors.primary),
+                            ),
+                          ),
+                        ),
                         Container(
                           width: double.infinity,
                           margin: const EdgeInsets.symmetric(

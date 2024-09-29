@@ -25,7 +25,10 @@ class RecentTransactions extends StatefulWidget {
 class _RecentTransactionsState extends State<RecentTransactions> {
   @override
   void initState() {
-    sl<AccountBloc>().add(GetTransactionsEvent());
+    if (sl<AccountBloc>().state
+        is! AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+      sl<AccountBloc>().add(GetTransactionsEvent());
+    }
     super.initState();
   }
 

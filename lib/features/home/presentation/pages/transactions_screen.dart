@@ -21,8 +21,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   @override
   void initState() {
     controller = ScrollController();
-    sl<AccountBloc>().add(GetTransactionsEvent());
 
+    if (sl<AccountBloc>().state
+        is! AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+      sl<AccountBloc>().add(GetTransactionsEvent());
+    }
     super.initState();
   }
 
@@ -32,6 +35,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       appBar: AppBar(
         title: const Text("My Transactions"),
         centerTitle: false,
+        elevation: 0.0,
+        surfaceTintColor: Colors.transparent,
         titleSpacing: 24,
         actions: const [
           Padding(
@@ -44,7 +49,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         value: sl<AccountBloc>(),
         child: BlocBuilder<AccountBloc, AccountState>(
             buildWhen: (previous, current) {
-          print({previous, current});
           if (current
               is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
             return true;
@@ -63,20 +67,10 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             transactions = state.data!;
           }
 
-          return SingleChildScrollView(
-            controller: state is AccountLoading<GetTransactionsEvent>
-                ? null
-                : controller,
-            child: Column(
-              children: [
-                AnimatedTransactionList(
-                  controller: controller,
-                  transactions: transactions,
-                  state: state,
-                ),
-                Padding(padding: MediaQuery.paddingOf(context)),
-              ],
-            ),
+          return AnimatedTransactionList(
+            controller: controller,
+            transactions: transactions,
+            state: state,
           );
         }),
       ),

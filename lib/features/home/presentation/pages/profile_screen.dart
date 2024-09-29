@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trustlink/core/constants/app_colors.dart';
 import 'package:trustlink/features/auth/presentation/pages/login_screen.dart';
+import 'package:trustlink/features/home/presentation/components/profile_widget.dart';
+import 'package:trustlink/features/home/presentation/pages/change_password_screen.dart';
+import 'package:trustlink/features/home/presentation/pages/change_pin_screen.dart';
 
 import '../../../../injection_container.dart';
 
@@ -24,44 +27,32 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundColor: AppColors.grey,
-                    radius: 35.0,
-                  ),
-                  SizedBox(
-                    width: 12.0,
-                  ),
-                  Text(
-                    "Your name",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ],
-              ),
+              const ProfileWidget(),
               ListView(
                 shrinkWrap: true,
                 children: [
                   ListTile(
-                    title: Text("Change Password",
-                        style: Theme.of(context).textTheme.bodyLarge),
-                    horizontalTitleGap: 0.0,
-                    onTap: () {},
+                    title: const Text("Change Password"),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ChangePasswordScreen()));
+                    },
                   ),
                   ListTile(
-                    title: Text("Change Pin"),
-                    horizontalTitleGap: 0.0,
-                    onTap: () {},
+                    title: const Text("Change Pin"),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ChangePinScreen()));
+                    },
                   ),
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       "Log out",
                     ),
                     textColor: AppColors.error,
-                    horizontalTitleGap: 0.0,
                     onTap: () {
                       sl<SharedPreferences>().remove("bearer");
                       Navigator.of(context).pushReplacement(MaterialPageRoute(

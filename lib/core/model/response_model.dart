@@ -4,7 +4,7 @@ part 'response_model.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
 class ResponseModel<T> {
-  final String? status;
+  final dynamic status;
   final String? message;
   final T? data;
 

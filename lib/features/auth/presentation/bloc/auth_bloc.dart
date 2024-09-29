@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trustlink/features/auth/data/models/user_token_model.dart';
 
 import '../../../../core/resources/data_state.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -14,6 +15,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterEvent>(onRegister);
     on<ResendOTPEvent>(onResendOTP);
     on<ResetPasswordEvent>(onResetPassword);
+    on<GetUserEvent>(onGetUser);
+    on<ChangePasswordEvent>(onChangePassword);
   }
 
   void onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -80,7 +83,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       "email": event.email,
     });
     if (dataState is DataSuccess) {
-      emit(const AuthSuccess<ResetPasswordEvent>());
+      emit(AuthSuccess<ResetPasswordEvent>(email: dataState.data!.message!));
+    } else {
+      emit(AuthException((dataState.exception!).message!));
+    }
+  }
+
+  void onChangePassword(
+      ChangePasswordEvent event, Emitter<AuthState> emit) async {
+    emit(const AuthLoading<ChangePasswordEvent>());
+    final dataState = await _authRepository.changePassword({
+      "old_password": event.oldPassword,
+      "new_password": event.newPassword,
+      "confirm": event.confirm,
+    });
+    if (dataState is DataSuccess) {
+      emit(AuthSuccess<ChangePasswordEvent>(email: dataState.data!.message!));
+    } else {
+      emit(AuthException((dataState.exception!).message!));
+    }
+  }
+
+  void onGetUser(GetUserEvent event, Emitter<AuthState> emit) async {
+    emit(const AuthLoading<GetUserEvent>());
+    final dataState = await _authRepository.getUserDetails();
+
+    if (dataState is DataSuccess) {
+      emit(AuthSuccess<GetUserEvent>(
+          user: UserTokenModel(user: dataState.data?.data!)));
     } else {
       emit(AuthException((dataState.exception!).message!));
     }
