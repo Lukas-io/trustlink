@@ -93,9 +93,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                         fontSize: 32,
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.5,
-                        color: transaction.type! == TransactionType.credit
-                            ? AppColors.completedText
-                            : AppColors.error,
+                        color: transaction.type! == TransactionType.credit ? AppColors.completedText : AppColors.error,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -126,7 +124,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              // Details card
+              // Parties
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
@@ -139,32 +137,63 @@ class TransactionDetailsScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _detailRow(
+                    _partyRow(
                       context,
-                      label: "Receiver",
-                      value: transaction.receiver!.email!,
-                      isMe: transaction.receiver!.email! == email,
-                    ),
-                    _divider(),
-                    _detailRow(
-                      context,
-                      label: "Sender",
-                      value: transaction.sender!.email!,
+                      label: "From",
+                      name: "${transaction.sender!.firstName} ${transaction.sender!.lastName}",
+                      email: transaction.sender!.email!,
                       isMe: transaction.sender!.email! == email,
                     ),
                     _divider(),
-                    _detailRow(
+                    _partyRow(
                       context,
-                      label: "Description",
-                      value: transaction.description!,
+                      label: "To",
+                      name: "${transaction.receiver!.firstName} ${transaction.receiver!.lastName}",
+                      email: transaction.receiver!.email!,
+                      isMe: transaction.receiver!.email! == email,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              // Description
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: AppColors.outline.withOpacity(0.2),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Description",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      transaction.description!,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.text,
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 24),
               // Action buttons
-              if (transaction.type == TransactionType.credit &&
-                  transaction.status == TransactionStatus.pending)
+              if (transaction.type == TransactionType.credit && transaction.status == TransactionStatus.pending)
                 _actionButton(
                   context,
                   label: "Verify Payment",
@@ -172,13 +201,11 @@ class TransactionDetailsScreen extends StatelessWidget {
                     showCupertinoDialog(
                       context: context,
                       barrierDismissible: true,
-                      builder: (context) =>
-                          VerifyDialog(id: transaction.id!.toString()),
+                      builder: (context) => VerifyDialog(id: transaction.id!.toString()),
                     );
                   },
                 ),
-              if (transaction.type == TransactionType.debit &&
-                  transaction.status == TransactionStatus.pending)
+              if (transaction.type == TransactionType.debit && transaction.status == TransactionStatus.pending)
                 _actionButton(
                   context,
                   label: "Request Refund",
@@ -186,13 +213,11 @@ class TransactionDetailsScreen extends StatelessWidget {
                     showCupertinoDialog(
                       context: context,
                       barrierDismissible: true,
-                      builder: (context) =>
-                          RequestRefundDialog(id: transaction.id!.toString()),
+                      builder: (context) => RequestRefundDialog(id: transaction.id!.toString()),
                     );
                   },
                 ),
-              if (transaction.type == TransactionType.debit &&
-                  transaction.status == TransactionStatus.canceled)
+              if (transaction.type == TransactionType.debit && transaction.status == TransactionStatus.canceled)
                 _actionButton(
                   context,
                   label: "Confirm Refund",
@@ -200,8 +225,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                     showCupertinoDialog(
                       context: context,
                       barrierDismissible: true,
-                      builder: (context) =>
-                          ConfirmDialog(id: transaction.id!.toString()),
+                      builder: (context) => ConfirmDialog(id: transaction.id!.toString()),
                     );
                   },
                 ),
@@ -236,10 +260,11 @@ class TransactionDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _detailRow(
+  Widget _partyRow(
     BuildContext context, {
     required String label,
-    required String value,
+    required String name,
+    required String email,
     bool isMe = false,
   }) {
     return Padding(
@@ -248,7 +273,7 @@ class TransactionDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 90,
+            width: 42,
             child: Text(
               label,
               style: const TextStyle(
@@ -259,13 +284,51 @@ class TransactionDetailsScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(
-              value + (isMe ? "  (You)" : ""),
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.text,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.text,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (isMe)
+                      Container(
+                        margin: const EdgeInsets.only(left: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Text(
+                          "You",
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  email,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         ],
@@ -370,12 +433,10 @@ class VerifyDialog extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (pin.length < 4) {
-                          Global.showErrorMessage(
-                              message: "Enter a valid 4-digit PIN.");
+                          Global.showErrorMessage(message: "Enter a valid 4-digit PIN.");
                           return;
                         }
-                        sl<AccountBloc>().add(
-                            VerifyTransactionEvent(id: id, code: pin));
+                        sl<AccountBloc>().add(VerifyTransactionEvent(id: id, code: pin));
                       },
                       child: state is AccountLoading<VerifyTransactionEvent>
                           ? const SizedBox(
@@ -482,12 +543,10 @@ class ConfirmDialog extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (pin.length < 4) {
-                          Global.showErrorMessage(
-                              message: "Enter a valid 4-digit PIN.");
+                          Global.showErrorMessage(message: "Enter a valid 4-digit PIN.");
                           return;
                         }
-                        sl<AccountBloc>()
-                            .add(CompleteRefundEvent(id: id, code: pin));
+                        sl<AccountBloc>().add(CompleteRefundEvent(id: id, code: pin));
                       },
                       child: state is AccountLoading<CompleteRefundEvent>
                           ? const SizedBox(
@@ -597,8 +656,7 @@ class RequestRefundDialog extends StatelessWidget {
                   StatefulBuilder(builder: (context, setState) {
                     return InkWell(
                       onTap: () async {
-                        FilePickerResult? result =
-                            await FilePicker.platform.pickFiles();
+                        FilePickerResult? result = await FilePicker.platform.pickFiles();
                         if (result != null) {
                           proof = File(result.files.single.path!);
                           setState(() {
@@ -608,8 +666,7 @@ class RequestRefundDialog extends StatelessWidget {
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: AppColors.outline.withOpacity(0.4),
@@ -619,23 +676,17 @@ class RequestRefundDialog extends StatelessWidget {
                         child: Row(
                           children: [
                             Icon(
-                              proofName.isEmpty
-                                  ? Icons.attach_file_rounded
-                                  : Icons.insert_drive_file_outlined,
+                              proofName.isEmpty ? Icons.attach_file_rounded : Icons.insert_drive_file_outlined,
                               size: 18,
                               color: AppColors.textSecondary,
                             ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                proofName.isEmpty
-                                    ? "Attach proof (optional)"
-                                    : proofName,
+                                proofName.isEmpty ? "Attach proof (optional)" : proofName,
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: proofName.isEmpty
-                                      ? AppColors.grey
-                                      : AppColors.text,
+                                  color: proofName.isEmpty ? AppColors.grey : AppColors.text,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -657,12 +708,10 @@ class RequestRefundDialog extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (reason.isEmpty) {
-                          Global.showErrorMessage(
-                              message: "Please enter a reason for the refund.");
+                          Global.showErrorMessage(message: "Please enter a reason for the refund.");
                           return;
                         }
-                        sl<AccountBloc>()
-                            .add(RequestRefundEvent(id: id, reason: reason));
+                        sl<AccountBloc>().add(RequestRefundEvent(id: id, reason: reason));
                       },
                       child: state is AccountLoading<RequestRefundEvent>
                           ? const SizedBox(

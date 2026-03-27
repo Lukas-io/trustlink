@@ -59,12 +59,13 @@ class OnboardingScreen extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.white,
               padding: const EdgeInsets.symmetric(vertical: 16.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0))),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0))),
           child: Text(
             "Get Started",
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.primary, fontWeight: FontWeight.w600),
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600),
           ),
         ),
       ),
@@ -77,11 +78,7 @@ class OnboardingPage extends StatelessWidget {
   final String title;
   final String body;
 
-  const OnboardingPage(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.body});
+  const OnboardingPage({super.key, required this.image, required this.title, required this.body});
 
   @override
   Widget build(BuildContext context) {
@@ -106,10 +103,7 @@ class OnboardingPage extends StatelessWidget {
           ),
           Text(
             body,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: AppColors.white),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.white),
           ),
         ],
       ),
