@@ -27,21 +27,33 @@ class PrimaryButton extends StatelessWidget {
           onPressed();
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            padding: padding ??
-                const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0))),
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.white,
+          elevation: 0,
+          padding: padding ??
+              const EdgeInsets.symmetric(
+                vertical: 16.0,
+              ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+        ),
         child: isLoading ?? false
-            ? const CircularProgressIndicator(
-                color: Colors.white,
+            ? const SizedBox(
+                height: 22,
+                width: 22,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.5,
+                ),
               )
             : Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.white, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  color: AppColors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
       ),
     );
