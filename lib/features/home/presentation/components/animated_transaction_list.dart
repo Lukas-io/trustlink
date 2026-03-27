@@ -107,6 +107,7 @@ class AnimatedTransactionList extends StatelessWidget {
                         ? Shimmer.fromColors(
                             baseColor: AppColors.secondary,
                             highlightColor: AppColors.bg,
+                            direction: ShimmerDirection.ttb,
                             child: ListView.separated(
                                 padding: const EdgeInsets.only(top: 4),
                                 physics: const NeverScrollableScrollPhysics(),

@@ -25,8 +25,7 @@ class RecentTransactions extends StatefulWidget {
 class _RecentTransactionsState extends State<RecentTransactions> {
   @override
   void initState() {
-    if (sl<AccountBloc>().state
-        is! AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+    if (sl<AccountBloc>().state is! AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
       sl<AccountBloc>().add(GetTransactionsEvent());
     }
     super.initState();
@@ -38,8 +37,7 @@ class _RecentTransactionsState extends State<RecentTransactions> {
       value: sl<AccountBloc>(),
       child: BlocBuilder<AccountBloc, AccountState>(
         buildWhen: (previous, current) {
-          if (current
-              is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+          if (current is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
             return true;
           }
           if (current is AccountLoading<GetTransactionsEvent>) {
@@ -52,17 +50,14 @@ class _RecentTransactionsState extends State<RecentTransactions> {
         },
         builder: (context, state) {
           List<TransactionModel> transactions = [];
-          if (state
-              is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+          if (state is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
             transactions = state.data!;
           }
           return Card(
             child: Container(
               width: double.infinity,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(12.0)),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0)),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -70,14 +65,16 @@ class _RecentTransactionsState extends State<RecentTransactions> {
                 children: [
                   Text(
                     "Recent Transactions",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(color: AppColors.grey),
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   if (state is AccountLoading<GetTransactionsEvent>)
                     Shimmer.fromColors(
                       baseColor: AppColors.secondary,
+                      direction: ShimmerDirection.ttb,
                       highlightColor: AppColors.bg,
                       child: ListView.separated(
                           padding: const EdgeInsets.only(top: 4),
@@ -95,8 +92,7 @@ class _RecentTransactionsState extends State<RecentTransactions> {
                           },
                           itemCount: widget.transactionLength),
                     ),
-                  if (state is AccountSuccess<GetTransactionsEvent,
-                      List<TransactionModel>>)
+                  if (state is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>)
                     transactions.isEmpty
                         ? const Center(
                             child: Text("No Transactions yet!"),
@@ -116,10 +112,9 @@ class _RecentTransactionsState extends State<RecentTransactions> {
                                 thickness: 0.2,
                               );
                             },
-                            itemCount:
-                                widget.transactionLength > transactions.length
-                                    ? transactions.length
-                                    : widget.transactionLength),
+                            itemCount: widget.transactionLength > transactions.length
+                                ? transactions.length
+                                : widget.transactionLength),
                 ],
               ),
             ),

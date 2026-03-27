@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trustlink/features/home/presentation/components/info_dialog.dart';
 
+import '../../../../core/constants/app_colors.dart';
 import '../../../../injection_container.dart';
 import '../../data/models/transaction/transaction_model.dart';
 import '../bloc/account_bloc.dart';
@@ -23,8 +25,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   void initState() {
     controller = ScrollController();
 
-    if (sl<AccountBloc>().state
-        is! AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+    if (sl<AccountBloc>().state is! AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
       sl<AccountBloc>().add(GetTransactionsEvent());
     }
     super.initState();
@@ -41,22 +42,35 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         titleSpacing: 24,
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 24.0),
-            child: IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context, builder: (context) => InfoDialog());
-                },
-                icon: Icon(Icons.info_outline)),
-          )
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                showCupertinoDialog(context: context, barrierDismissible: true, builder: (context) => const InfoDialog());
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.outline.withOpacity(0.3),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.info_outline,
+                  size: 20,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
       body: BlocProvider<AccountBloc>.value(
         value: sl<AccountBloc>(),
-        child: BlocBuilder<AccountBloc, AccountState>(
-            buildWhen: (previous, current) {
-          if (current
-              is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+        child: BlocBuilder<AccountBloc, AccountState>(buildWhen: (previous, current) {
+          if (current is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
             return true;
           }
           if (current is AccountLoading<GetTransactionsEvent>) {
@@ -68,8 +82,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           return false;
         }, builder: (context, state) {
           List<TransactionModel> transactions = [];
-          if (state
-              is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
+          if (state is AccountSuccess<GetTransactionsEvent, List<TransactionModel>>) {
             transactions = state.data!;
           }
 

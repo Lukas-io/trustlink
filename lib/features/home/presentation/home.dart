@@ -26,28 +26,54 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(24)),
+      bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            border: Border(
+              top: BorderSide(
+                color: AppColors.outline.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+          ),
           child: BottomNavigationBar(
             currentIndex: selectedIndex,
-            iconSize: 30.0,
+            iconSize: 26.0,
             selectedItemColor: AppColors.primary,
+            unselectedItemColor: AppColors.grey,
             backgroundColor: AppColors.white,
-            selectedFontSize: 14,
-            unselectedFontSize: 14,
+            elevation: 0,
+            selectedFontSize: 12,
+            unselectedFontSize: 12,
+            type: BottomNavigationBarType.fixed,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                activeIcon: Icon(Icons.home),
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 2),
+                  child: Icon(Icons.home_outlined),
+                ),
+                activeIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 2),
+                  child: Icon(Icons.home),
+                ),
                 label: "Home",
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.doc_text),
-                activeIcon: Icon(CupertinoIcons.doc_text_fill),
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 2),
+                  child: Icon(CupertinoIcons.doc_text),
+                ),
+                activeIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 2),
+                  child: Icon(CupertinoIcons.doc_text_fill),
+                ),
                 label: "Transactions",
               ),
               BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.profile_circled),
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 2),
+                  child: Icon(CupertinoIcons.profile_circled),
+                ),
                 label: "Profile",
               ),
             ],

@@ -13,40 +13,42 @@ class QuickItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0)),
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            QuickItem(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        spacing: 12,
+        children: [
+          Expanded(
+            child: QuickItem(
               icon: CupertinoIcons.link,
               title: 'Create Link',
+              color: AppColors.primary,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CreateLinkScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CreateLinkScreen()));
               },
             ),
-            QuickItem(
+          ),
+          Expanded(
+            child: QuickItem(
               icon: CupertinoIcons.paperplane,
               title: 'Transfer',
+              color: AppColors.secondary,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const TransferScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TransferScreen()));
               },
             ),
-            QuickItem(
+          ),
+          Expanded(
+            child: QuickItem(
               icon: CupertinoIcons.arrow_2_circlepath,
               title: 'Withdraw',
+              color: AppColors.orange,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const WithdrawScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WithdrawScreen()));
               },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -55,35 +57,53 @@ class QuickItems extends StatelessWidget {
 class QuickItem extends StatelessWidget {
   final IconData icon;
   final String title;
+  final Color color;
   final Function() onPressed;
 
   const QuickItem({
     super.key,
     required this.icon,
     required this.title,
+    required this.color,
     required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.shade100, width: 0.2)),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(12.0),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Column(
+            spacing: 6,
             children: [
-              CircleAvatar(
-                backgroundColor: AppColors.grey.withOpacity(0.1),
-                radius: 25.0,
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Icon(
                   icon,
-                  color: AppColors.primary,
-                  size: 30.0,
+                  color: color,
+                  size: 22,
                 ),
               ),
-              Text(title)
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.text,
+                ),
+              ),
             ],
           ),
         ),

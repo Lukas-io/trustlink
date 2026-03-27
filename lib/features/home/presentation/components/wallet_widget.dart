@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:trustlink/features/home/presentation/pages/fund_screen.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/resources/global.dart';
@@ -10,6 +9,7 @@ import '../../data/models/account/wallet_model.dart';
 import '../bloc/account_bloc.dart';
 import '../bloc/account_event.dart';
 import '../bloc/account_state.dart';
+import '../pages/fund_screen.dart';
 
 class WalletWidget extends StatefulWidget {
   const WalletWidget({
@@ -31,74 +31,85 @@ class _WalletWidgetState extends State<WalletWidget> {
   Widget build(BuildContext context) {
     return BlocProvider<AccountBloc>.value(
       value: sl<AccountBloc>(),
-      child: BlocBuilder<AccountBloc, AccountState>(
-          buildWhen: (previous, current) {
-        if (current is AccountSuccess<GetWalletEvent, WalletModel>
-            // ||
-            // current is AccountLoading<GetWalletEvent>
-            ) {
+      child: BlocBuilder<AccountBloc, AccountState>(buildWhen: (previous, current) {
+        if (current is AccountSuccess<GetWalletEvent, WalletModel>) {
           return true;
         } else {
           return false;
         }
       }, builder: (context, state) {
-        return Card(
-          child: Container(
-            width: double.infinity,
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(12.0)),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Column(
+        return Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Wallet Balance",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: AppColors.grey),
+                      style: TextStyle(
+                        color: AppColors.white.withOpacity(0.7),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     state is AccountSuccess<GetWalletEvent, WalletModel>
                         ? Text(
-                            Global.formatCurrency(
-                                state.data!.wallet!.balance!.toString()),
+                            Global.formatCurrency(state.data!.wallet!.balance!.toString()),
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            style: const TextStyle(
+                              color: AppColors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -0.5,
+                            ),
                           )
                         : Shimmer.fromColors(
-                            baseColor: AppColors.bg,
-                            highlightColor: AppColors.secondary,
-                            child: Text(
-                              "Loading...",
-                              style: Theme.of(context).textTheme.headlineMedium,
+                            baseColor: AppColors.white.withOpacity(0.2),
+                            highlightColor: AppColors.white.withOpacity(0.4),
+                            child: Container(
+                              height: 38,
+                              width: 180,
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
                   ],
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const FundScreen()));
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FundScreen()));
                   },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.secondary,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0.0, horizontal: 0.0),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0))),
-                  child: Text(
-                    "Fund",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.white, fontWeight: FontWeight.w600),
+                  borderRadius: BorderRadius.circular(10),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Text(
+                      "Fund Wallet",
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }),

@@ -52,29 +52,28 @@ class SetPinScreen extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: state is AccountLoading<CreateWalletEvent>
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : ElevatedButton(
-                            onPressed: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              if (pin.length < 4) {
-                                Global.showErrorMessage(
-                                    message: "Please fill all the fields");
-                              } else {
-                                sl<AccountBloc>()
-                                    .add(CreateWalletEvent(pin: pin));
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16.0,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0))),
-                            child: Text(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        if (pin.length < 4) {
+                          Global.showErrorMessage(
+                              message: "Please fill all the fields");
+                        } else {
+                          sl<AccountBloc>().add(CreateWalletEvent(pin: pin));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16.0,
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0))),
+                      child: state is AccountLoading<CreateWalletEvent>
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : Text(
                               "Set Pin",
                               style: Theme.of(context)
                                   .textTheme
@@ -83,7 +82,7 @@ class SetPinScreen extends StatelessWidget {
                                       color: AppColors.white,
                                       fontWeight: FontWeight.w600),
                             ),
-                          ),
+                    ),
                   ),
                 ],
               ),

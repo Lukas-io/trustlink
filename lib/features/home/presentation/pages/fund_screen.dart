@@ -30,8 +30,7 @@ class FundScreen extends StatelessWidget {
       ),
       body: BlocProvider<AccountBloc>.value(
         value: sl<AccountBloc>(),
-        child:
-            BlocConsumer<AccountBloc, AccountState>(listener: (context, state) {
+        child: BlocConsumer<AccountBloc, AccountState>(listener: (context, state) {
           if (state is AccountSuccess<CardDepositEvent, String>) {
             Global.showResponseMessage(message: state.data!);
             Navigator.pop(context);
@@ -68,16 +67,18 @@ class FundScreen extends StatelessWidget {
                     amount = number;
                   }),
                   SizedBox(
-                    height: 24.0,
+                    height: 32.0,
                   ),
                   Text("Card Number"),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Form(
                     child: Column(
+                      spacing: 12,
                       children: [
                         TextField(
-                            autofillHints: const [
-                              AutofillHints.creditCardNumber
-                            ],
+                            autofillHints: const [AutofillHints.creditCardNumber],
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -85,10 +86,7 @@ class FundScreen extends StatelessWidget {
                             ],
                             decoration: InputDecoration(
                               hintText: "0000 0000 0000 0000",
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(color: AppColors.grey),
+                              hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.grey),
                               prefixIcon: const Icon(CupertinoIcons.creditcard),
                               labelStyle: Theme.of(context).textTheme.bodyLarge,
                             ),
@@ -104,16 +102,12 @@ class FundScreen extends StatelessWidget {
                                 FocusManager.instance.primaryFocus?.nextFocus();
                               }
                             }),
-                        SizedBox(
-                          height: 12.0,
-                        ),
                         Row(
+                          spacing: 12,
                           children: [
                             Expanded(
                               child: TextField(
-                                autofillHints: const [
-                                  AutofillHints.creditCardExpirationDate
-                                ],
+                                autofillHints: const [AutofillHints.creditCardExpirationDate],
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -121,48 +115,32 @@ class FundScreen extends StatelessWidget {
                                 ],
                                 decoration: InputDecoration(
                                   hintText: "MM/YY",
-                                  hintStyle: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(color: AppColors.grey),
-                                  prefixIcon:
-                                      const Icon(CupertinoIcons.calendar_today),
-                                  labelStyle:
-                                      Theme.of(context).textTheme.bodyLarge,
+                                  hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.grey),
+                                  prefixIcon: const Icon(CupertinoIcons.calendar_today),
+                                  labelStyle: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 onChanged: (text) {
                                   List<String> expiry = text.split("/");
                                   expiryMonth = expiry[0];
-                                  expiryYear =
-                                      expiry.length == 2 ? expiry[1] : "";
+                                  expiryYear = expiry.length == 2 ? expiry[1] : "";
                                   if (text.length > 4) {
-                                    FocusManager.instance.primaryFocus
-                                        ?.nextFocus();
+                                    FocusManager.instance.primaryFocus?.nextFocus();
                                   }
                                 },
                               ),
                             ),
-                            SizedBox(
-                              width: 18.0,
-                            ),
                             Expanded(
                               child: TextField(
-                                  autofillHints: const [
-                                    AutofillHints.creditCardSecurityCode
-                                  ],
+                                  autofillHints: const [AutofillHints.creditCardSecurityCode],
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
                                   ],
                                   decoration: InputDecoration(
                                     hintText: "CVV",
-                                    hintStyle: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(color: AppColors.grey),
+                                    hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.grey),
                                     prefixIcon: const Icon(CupertinoIcons.lock),
-                                    labelStyle:
-                                        Theme.of(context).textTheme.bodyLarge,
+                                    labelStyle: Theme.of(context).textTheme.bodyLarge,
                                   ),
                                   onChanged: (text) {
                                     cvv = text;
@@ -172,6 +150,9 @@ class FundScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: 12,
                   ),
                   PrimaryButton(
                     onPressed: () {
@@ -183,11 +164,7 @@ class FundScreen extends StatelessWidget {
                         expiryYear: expiryYear,
                       });
                       // print(object)
-                      if (amount == 0 ||
-                          number.isEmpty ||
-                          expiryYear.isEmpty ||
-                          cvv.isEmpty ||
-                          expiryMonth.isEmpty) {
+                      if (amount == 0 || number.isEmpty || expiryYear.isEmpty || cvv.isEmpty || expiryMonth.isEmpty) {
                         Global.showErrorMessage(
                           message: "Enter values for all the fields",
                         );
