@@ -127,6 +127,12 @@ Hackathon code is honest code. Here's what didn't make the cut:
 developer (me). I built the entire Flutter app solo across the 14-day
 sprint.
 
+## 📌 Note
+
+This is a personal fork of the team repository from the KoraHACK 2.0
+build. The original repo is private — this fork exists for portfolio
+purposes.
+
 ---
 
 Built for [KoraHACK 2.0](https://www.korahq.com/hackathon2024) —
