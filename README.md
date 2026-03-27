@@ -17,25 +17,28 @@ front of judges and walked away with first place.
   <summary><h2>📱 ▼ App Screenshots</h2></summary>
   <br>
 
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-    <img src="https://github.com/user-attachments/assets/ca1ac337-4597-49a6-8dec-00c6520ffbd9" alt="Screen 1" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/e23fcb53-aa42-4272-b447-8f5358b8b7e5" alt="Screen 2" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/a2a812aa-9608-46b8-a745-17d2d6a74450" alt="Screen 3" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/5f79f09c-d1de-43c2-8745-36a8099791e2" alt="Screen 4" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/1ab3c16c-6f3c-4441-aeef-2bc8d656e8a9" alt="Screen 5" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/f91a7ad0-b10b-4bee-adb2-0ad31fa8aba1" alt="Screen 6" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/120a99c8-3616-4006-8df7-e94c14df8357" alt="Screen 7" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/bffcbbde-42a5-41b2-b7b0-7b79f4dff351" alt="Screen 8" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/d94d8fae-1992-4919-9bb6-5c0ccd1f71a2" alt="Screen 9" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/7f95f871-5605-4678-a04c-630c8bf49f48" alt="Screen 10" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/94642599-51c2-4a6b-9e62-a8a2123afe95" alt="Screen 11" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/324d0a18-3fc5-4103-bb6e-52fbee37a5f0" alt="Screen 12" loading="lazy" style="width: 100%; border-radius: 8px;" />
-    <img src="https://github.com/user-attachments/assets/81f214d5-36ff-4bd7-a355-bac191399804" alt="Screen 13" loading="lazy" style="width: 100%; border-radius: 8px;" />
+  <div style="
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+  ">
+    <img src="https://github.com/user-attachments/assets/ca1ac337-4597-49a6-8dec-00c6520ffbd9" alt="Screen 1" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/e23fcb53-aa42-4272-b447-8f5358b8b7e5" alt="Screen 2" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/a2a812aa-9608-46b8-a745-17d2d6a74450" alt="Screen 3" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/5f79f09c-d1de-43c2-8745-36a8099791e2" alt="Screen 4" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/1ab3c16c-6f3c-4441-aeef-2bc8d656e8a9" alt="Screen 5" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/f91a7ad0-b10b-4bee-adb2-0ad31fa8aba1" alt="Screen 6" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/120a99c8-3616-4006-8df7-e94c14df8357" alt="Screen 7" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/bffcbbde-42a5-41b2-b7b0-7b79f4dff351" alt="Screen 8" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/d94d8fae-1992-4919-9bb6-5c0ccd1f71a2" alt="Screen 9" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/7f95f871-5605-4678-a04c-630c8bf49f48" alt="Screen 10" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/94642599-51c2-4a6b-9e62-a8a2123afe95" alt="Screen 11" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/324d0a18-3fc5-4103-bb6e-52fbee37a5f0" alt="Screen 12" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
+    <img src="https://github.com/user-attachments/assets/81f214d5-36ff-4bd7-a355-bac191399804" alt="Screen 13" loading="lazy" style="width: 250px; height: auto; margin-right: 8px; border-radius: 8px;" />
   </div>
 
 </details>
-
-
 
 ## Features
 
